@@ -11,3 +11,4 @@ pyvenv.cfg
 .venv
 *.pyc
 pip-selfcheck.json
+*db.sqlite3
