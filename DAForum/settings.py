@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     # user Created apps
     'apps.dashboard',
+    'apps.forum',
 ]
 
 MIDDLEWARE = [
