@@ -1,4 +1,8 @@
-from django.views.generic import TemplateView
+from django.views.generic import ListView
 
-class DashboardView(TemplateView):
-    template_name='dashboard/dashboard.html'
+from apps.forum.models import Category
+
+class DashboardListView(ListView):
+    model = Category
+    context_object_name = "categories"
+    template_name = 'dashboard/dashboard.html'
