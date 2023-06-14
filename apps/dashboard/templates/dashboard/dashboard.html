@@ -1,32 +1,64 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
+<div class="container">
+    <div class="row">
+    
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="{% static "images/DA.jpeg" %}" alt="DataArt Forum"/>
+                </div>
+                <div class="col-md-4 com-md-2">
+                    <h1> DataArt Forum </h1>
+                    <p> The place to talk about what you really love. </p>
+                </div>
+            </div>
+        </div>
+    
+    </div>
 
-{% for category in categories %}
+    <div class="row m-5">
+        <div class="container">
+            <div class="row">
 
-<div>
-    {% if category.need_auth %}
+                <div class="col-md-4">
+                    <h2 style="background-color:LightGray">Updates</h2>
+                </div>
 
-        {% if user.is_authenticated %}
-        <h2>{{category.name}}</h2>
-            {% for subcategory in category.subcategory.all %}
+                {% for category in categories %}
+                {% if category.need_auth is False %}
+                <div class="col">
+                    <h2 style="background-color:DarkGray">{{category.name}}</h2>
+                    {% for subcategory in category.subcategory.all %}
+                        <a href="" class="text-dark text-decoration-non">
+                            <p>{{subcategory.name}}</p> 
+                        </a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% endfor %}
 
-            <p>{{subcategory.name}}</p>
-            {% endfor %}
-        {% endif %}
-
-    {% else %}
-
-        <h2>{{category.name}}</h2>
-            {% for subcategory in category.subcategory.all %}
-
-            <p>{{subcategory.name}}</p>
-            {% endfor %}
-
-    {% endif %}
+                {% comment %} Sending the auth categories to the end {% endcomment %}
+                {% for category in categories %}
+                {% if category.need_auth %}
+                {% if user.is_authenticated %}
+                <div class="col">
+                    <h2 style="background-color:Gray">{{category.name}}</h2>
+                        {% for subcategory in category.subcategory.all %}
+                        <a href="" class="text-dark text-decoration-non">
+                            <p>{{subcategory.name}}</p> 
+                        </a>
+                        {% endfor %}
+                </div>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 
 </div>
-
-{% endfor %}
 
 {% endblock %}
