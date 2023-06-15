@@ -15,16 +15,16 @@ class Subcategory(models.Model):
         return f"{self.category}/{self.name}"
 
 class Thread(models.Model):
-    subcategory = models.ForeignKey(Subcategory, on_delete=models.CASCADE)
+    subcategory = models.ForeignKey(Subcategory, on_delete=models.CASCADE, related_name='thread', verbose_name='subcategory')
     subject = models.CharField(max_length=200)
     name = models.CharField(max_length=200)
     email = models.EmailField(max_length=254)
     message = models.TextField()
-    image = models.ImageField(upload_to="uploads/", height_field=None, width_field=None, max_length=100)
+    image = models.ImageField(upload_to="static/uploads", height_field=None, width_field=None, max_length=100, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
 
 class ThreadResponse(models.Model):
-    thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
+    thread = models.ForeignKey(Thread, on_delete=models.CASCADE, related_name='response', verbose_name='thread')
     user = models.CharField(max_length=200)
     response = models.TextField()
     created = models.DateTimeField(auto_now_add=True)

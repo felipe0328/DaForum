@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row justify-content-center">
+
+        <div class="col-md-6">
+            <p>
+                {% for category in categories %}
+                    <b>{{category.name}}</b>
+                    {% for subcategory in category.subcategory.all %}
+                    <a href="{% url 'forum.subcategory' name=subcategory.name %}" class="text-dark text-decoration-non">{{subcategory.name}} </a>
+                    {% endfor %}
+                {% endfor %}
+                </p>
+        </div>
+
+        <div class="col-md-4 col-md-2">
+            <a href="{% url 'dashboard' %}"><img src="{% static "images/DA.jpeg" %}" alt="DataArt Forum" width="50"/></a>
+        </div>
+
+    </div>
+
+    <div class="row align-items-center">
+        {% if thread.image %}
+        <div class="col-sm-auto">
+            <img src="{% static thread.image %}" class="card-img-top" style="width: 200px;">
+        </div>
+        {% endif %}
+        <div class="col-xl-auto align-items-center">
+            <h1 style="text-align: center;">{{thread.subject}}</h1>
+            <small class="text-muted">{{subcategory.category.name}}/{{subcategory.name}}</small>
+            <p>{{thread.message}}</p>
+
+            <small class="text-muted" style="text-align: right;">Created By: {{thread.name}} at {{thread.created}}</small>
+        </div>
+    </div>
+    <div class="row m-5">
+        <div class="col">
+            <div class="container">
+                {% for response in thread.response.all %}
+                <div class="row my-2 border">
+                    <p style="text-align: left;">{{response.response}}</p>
+                    <small style="text-align: right;">Created By: {{response.user}} at {{response.created}}</small>
+                </div>
+                {% endfor %}
+            </div>
+
+
+            <a href="{% url 'forum.createThreadResponse' name=subcategory.name pk=thread.pk %}" class="btn btn-primary my-5">Add Response</a>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

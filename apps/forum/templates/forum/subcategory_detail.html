@@ -18,7 +18,7 @@
         </div>
 
         <div class="col-md-4 col-md-2">
-            <img src="{% static "images/DA.jpeg" %}" alt="DataArt Forum" width="50"/>
+            <a href="{% url 'dashboard' %}"><img src="{% static "images/DA.jpeg" %}" alt="DataArt Forum" width="50"/></a>
         </div>
 
     </div>
@@ -26,6 +26,31 @@
     <div class="row m-5">
         <div class="col">
             <h1>{{subcategory.name}}</h1>
+
+            <a href="{% url 'forum.createThread' name=subcategory.name %}" class="btn btn-primary my-5">Create New Thread</a>
+
+            <div class="container">
+                <div class="row row-cols-1 row-cols-md-4 g-4">
+                    {% for thread in subcategory.thread.all %}
+                    <a href="{% url 'forum.threadView' name=subcategory.name pk=thread.pk %}" style="text-decoration: none;">
+                    <div class="col">
+                      <div class="card h-100">
+                        {% if thread.image %}
+                        <img src="{% static thread.image %}" class="card-img-top">
+                        {% endif %}
+                        <div class="card-body">
+                          <h5 class="card-title">{{thread.subject}}</h5>
+                          <p class="card-text">{{thread.message|truncatechars:50}}</p>
+                        </div>
+                        <div class="card-footer">
+                          <small class="text-muted">{{thread.name}}</small>
+                        </div>
+                      </div>
+                    </div>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
     </div>
 </div>
