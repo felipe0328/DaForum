@@ -1,6 +1,15 @@
-from django.views.generic import ListView
-from .models import Category
+from django.shortcuts import render
 
-class CategoryListView(ListView):
-    model=Category
-    context_object_name="categories"
+from .models import Subcategory, Category
+
+
+def SubcategoryView(request, name:str):
+    categories = Category.objects.all()
+    subcategory = Subcategory.objects.get(name=name)
+    
+    context = {
+        "categories": categories,
+        "subcategory":subcategory
+    }
+
+    return render(request, "forum/subcategory_detail.html",context)
