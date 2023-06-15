@@ -8,6 +8,7 @@ media
 
 #VirtualEnv
 [Ss]cripts
+[Bb]in
 pyvenv.cfg
 
 # Backup files # 
