@@ -23,13 +23,13 @@
 
     </div>
 
-    <div class="row align-items-center">
+    <div class="row align-items-center justify-content-md-center">
         {% if thread.image %}
         <div class="col-sm-auto">
             <img src="{% static thread.image %}" class="card-img-top" style="width: 200px;">
         </div>
         {% endif %}
-        <div class="col-xl-auto align-items-center">
+        <div class="col-xl-8 col-md-6 align-items-center">
             <h1 style="text-align: center;">{{thread.subject}}</h1>
             <small class="text-muted">{{subcategory.category.name}}/{{subcategory.name}}</small>
             <p>{{thread.message}}</p>
@@ -48,8 +48,7 @@
                 {% endfor %}
             </div>
 
-
-            <a href="{% url 'forum.createThreadResponse' name=subcategory.name pk=thread.pk %}" class="btn btn-primary my-5">Add Response</a>
+            <a href="{% url 'forum.createThreadResponse' name=subcategory.name pk=thread.pk %}" class="btn btn-primary my-5">Reply</a>
         </div>
     </div>
 </div>

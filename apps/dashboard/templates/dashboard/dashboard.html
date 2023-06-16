@@ -26,8 +26,8 @@
                 <div class="col-md-4">
                     <h2 style="background-color:LightGray">Updates</h2>
                     {% for thread in threads %}
-                    <a href="" class="text-dark text-decoration-non">
-                        <p>{{thread.name}}</p> 
+                    <a href="{% url 'forum.threadView' name=thread.subcategory.name pk=thread.pk%}" class="text-dark text-decoration-non">
+                        <p><b>[{{thread.subcategory}}]</b> | {{thread.subject|truncatechars:25}}</p> 
                     </a>
                     {% endfor %}
                 </div>

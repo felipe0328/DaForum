@@ -4,7 +4,7 @@ from apps.forum.models import Category, Thread
 
 def DashboardView(request):
     categories = Category.objects.all()
-    threads = Thread.objects.all()[:10]
+    threads = Thread.objects.all().order_by('-created')[:10]
     
     context = {
         "categories": categories,
