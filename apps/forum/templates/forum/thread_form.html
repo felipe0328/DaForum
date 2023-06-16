@@ -3,9 +3,54 @@
 {% block content %}
 
 <form method="POST" name="uploadform" enctype="multipart/form-data"> {% csrf_token %}
-    {{form.as_p}}
+    <h1>Create new Thread</h1><br>
+
+    <p>
+        <label for="id_subject">Subject:</label>
+        <input type="text" name="subject" maxlength="200" required="" id="id_subject">
+    </p>
+
+    {% if user.is_authenticated %}
+    <p>
+        <label for="id_name">Name:</label>
+        <input type="text" name="name" maxlength="200" required="" id="id_name" value="{{user.username}}" readonly>
+    </p>
+
+    {% if user.email %}
+    <p>
+        <label for="id_email">Email:</label>
+        <input type="email" name="email" maxlength="254" required="" id="id_email" value="{{user.email}}" readonly>
+    </p>
+    {% else %}
+    <p>
+        <label for="id_email">Email:</label>
+        <input type="email" name="email" maxlength="254" required="" id="id_email">
+    </p>
+    {% endif %}
+    {% else %}
+    <p>
+        <label for="id_name">Name:</label>
+        <input type="text" name="name" maxlength="200" required="" id="id_name">
+    </p>
+
+    <p>
+        <label for="id_email">Email:</label>
+        <input type="email" name="email" maxlength="254" required="" id="id_email">
+    </p>
+    {% endif %}
+    
+    <p>
+        <label for="id_message">Message:</label>
+        <textarea name="message" cols="40" rows="10" required="" id="id_message"></textarea>
+    </p>
+
+    <p>
+        <label for="id_image">Image:</label>
+        <input type="file" name="image" accept="image/*" id="id_image">
+    </p>
 
     <button type="submit" class="btn btn-primary my-5">Submit</button>
+    <a class="btn btn-danger" onclick="history.back()">Cancel</a>
 </form>
 
 
