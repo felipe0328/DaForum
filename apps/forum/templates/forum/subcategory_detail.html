@@ -37,6 +37,8 @@
                       <div class="card h-100">
                         {% if thread.image %}
                         <img src="{% static thread.image %}" class="card-img-top">
+                        {% else %}
+                        <img src="{% static "images/placeholder.jpg" %}" class="card-img-top">
                         {% endif %}
                         <div class="card-body">
                           <h5 class="card-title">{{thread.subject}}</h5>
