@@ -26,9 +26,17 @@
                 <div class="col-md-4">
                     <h2 style="background-color:LightGray">Updates</h2>
                     {% for thread in threads %}
+                    {% if thread.subcategory.category.need_auth %}
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'forum.threadView' name=thread.subcategory.name pk=thread.pk%}" class="text-dark text-decoration-non">
+                            <p><b>[{{thread.subcategory}}]</b> | {{thread.subject|truncatechars:25}}</p> 
+                        </a>
+                        {% endif %}
+                    {% else %}
                     <a href="{% url 'forum.threadView' name=thread.subcategory.name pk=thread.pk%}" class="text-dark text-decoration-non">
                         <p><b>[{{thread.subcategory}}]</b> | {{thread.subject|truncatechars:25}}</p> 
                     </a>
+                    {% endif %}
                     {% endfor %}
                 </div>
 
