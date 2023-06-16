@@ -9,11 +9,26 @@
         <div class="col-md-6">
             <p>
                 {% for category in categories %}
-                    <b>{{category.name}}</b>
-                    {% for subcategory in category.subcategory.all %}
-                    <a href="{% url 'forum.subcategory' name=subcategory.name %}" class="text-dark text-decoration-non">{{subcategory.name}} </a>
-                    {% endfor %}
+                    {% if category.need_auth == False %}
+                        <b>[{{category.name}}]</b>
+                        {% for subcategory in category.subcategory.all %}
+                        <a href="{% url 'forum.subcategory' name=subcategory.name %}" class="text-dark text-decoration-non">{{subcategory.name}} </a>
+                        {% endfor %}
+                        &nbsp;
+                    {% endif %}
                 {% endfor %}
+
+                {% for category in categories %}
+                    {% if category.need_auth %}
+                    {%if user.is_authenticated%}
+                        <b>[{{category.name}}]</b>
+                        {% for subcategory in category.subcategory.all %}
+                        <a href="{% url 'forum.subcategory' name=subcategory.name %}" class="text-dark text-decoration-non">{{subcategory.name}} </a>
+                        {% endfor %}
+                        &nbsp;
+                        {% endif %}
+                    {% endif %}
+                {% endfor%}
                 </p>
         </div>
 
