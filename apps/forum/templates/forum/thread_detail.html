@@ -10,7 +10,7 @@
             <p>
                 {% for category in categories %}
                     <b>{{category.name}}</b>
-                    {% for subcategory in category.subcategory.all %}
+                    {% for subcategory in category.prefetched_subcategory %}
                     <a href="{% url 'forum.subcategory' name=subcategory.name %}" class="text-dark text-decoration-non">{{subcategory.name}} </a>
                     {% endfor %}
                 {% endfor %}
@@ -40,7 +40,7 @@
     <div class="row m-5">
         <div class="col">
             <div class="container">
-                {% for response in thread.response.all %}
+                {% for response in thread.prefetched_response %}
                 <div class="row my-2 border">
                     <p style="text-align: left;">{{response.response}}</p>
                     <small style="text-align: right;">Created By: {{response.user}} at {{response.created}}</small>

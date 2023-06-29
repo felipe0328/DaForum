@@ -11,7 +11,7 @@
                 {% for category in categories %}
                     {% if category.need_auth == False %}
                         <b>[{{category.name}}]</b>
-                        {% for subcategory in category.subcategory.all %}
+                        {% for subcategory in category.prefetched_subcategory %}
                         <a href="{% url 'forum.subcategory' name=subcategory.name %}" class="text-dark text-decoration-non">{{subcategory.name}} </a>
                         {% endfor %}
                         &nbsp;
@@ -22,7 +22,7 @@
                     {% if category.need_auth %}
                     {%if user.is_authenticated%}
                         <b>[{{category.name}}]</b>
-                        {% for subcategory in category.subcategory.all %}
+                        {% for subcategory in category.prefetched_subcategory %}
                         <a href="{% url 'forum.subcategory' name=subcategory.name %}" class="text-dark text-decoration-non">{{subcategory.name}} </a>
                         {% endfor %}
                         &nbsp;
@@ -46,7 +46,7 @@
 
             <div class="container">
                 <div class="row row-cols-1 row-cols-md-4 g-4">
-                    {% for thread in subcategory.thread.all %}
+                    {% for thread in subcategory.prefetched_thread %}
                     <a href="{% url 'forum.threadView' name=subcategory.name pk=thread.pk %}" style="text-decoration: none;">
                     <div class="col">
                       <div class="card h-100">

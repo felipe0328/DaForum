@@ -4,14 +4,15 @@ from django.shortcuts import render
 from django.views.generic import CreateView
 from django.urls import reverse_lazy
 from django.http.response import HttpResponseRedirect
+from django.db.models import Prefetch
 
 from .models import Subcategory, Category, Thread, ThreadResponse
 from .forms import ThreadForm, ThreadResponseForm
 
 
 def SubcategoryView(request, name:str):
-    categories = Category.objects.all()
-    subcategory = Subcategory.objects.get(name=name)
+    categories = Category.objects.prefetch_related(Prefetch("subcategory", to_attr="prefetched_subcategory"))
+    subcategory = Subcategory.objects.prefetch_related(Prefetch("thread", to_attr="prefetched_thread")).get(name=name)
     
     context = {
         "categories": categories,
@@ -21,9 +22,13 @@ def SubcategoryView(request, name:str):
     return render(request, "forum/subcategory_detail.html",context)
 
 def ThreadView(request, name:str, pk:int):
-    categories = Category.objects.all()
+    categories = Category.objects.prefetch_related(Prefetch("subcategory", to_attr="prefetched_subcategory"))
     subcategory = Subcategory.objects.get(name=name)
-    thread = Thread.objects.get(pk=pk)
+    thread = Thread.objects.prefetch_related(Prefetch("response", to_attr="prefetched_response")).get(pk=pk)
+
+    # Prefetching the data to reduce the number of calls to DB
+    Category.objects.prefetch_related("subcategory")
+    Subcategory.objects.prefetch_related("thread")
     
     context = {
         "categories": categories,
