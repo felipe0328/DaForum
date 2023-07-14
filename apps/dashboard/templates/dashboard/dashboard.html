@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+    
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="{% static "images/DA.jpeg" %}" alt="DataArt Forum"/>
+                </div>
+                <div class="col-md-4 com-md-2">
+                    <h1> DataArt Forum </h1>
+                    <p> The place to talk about what you really love. </p>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+
+    <div class="row m-5">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-4">
+                    <h2 style="background-color:LightGray">Updates</h2>
+                    {% for thread in threads %}
+                    {% if thread.subcategory.category.need_auth %}
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'forum.threadView' name=thread.subcategory.name pk=thread.pk%}" class="text-dark text-decoration-non">
+                            <p><b>[{{thread.subcategory}}]</b> | {{thread.subject|truncatechars:25}}</p> 
+                        </a>
+                        {% endif %}
+                    {% else %}
+                    <a href="{% url 'forum.threadView' name=thread.subcategory.name pk=thread.pk%}" class="text-dark text-decoration-non">
+                        <p><b>[{{thread.subcategory}}]</b> | {{thread.subject|truncatechars:25}}</p> 
+                    </a>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+
+                {% for category in categories %}
+                {% if category.need_auth is False %}
+                <div class="col">
+                    <h2 style="background-color:DarkGray">{{category.name}}</h2>
+                    {% for subcategory in category.prefetched_subcategory %}
+                        <a href="{% url 'forum.subcategory' name=subcategory.name %}" class="text-dark text-decoration-non">
+                            <p>{{subcategory.name}}</p> 
+                        </a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% endfor %}
+
+                {% comment %} Sending the auth categories to the end {% endcomment %}
+                {% for category in categories %}
+                {% if category.need_auth %}
+                {% if user.is_authenticated %}
+                <div class="col">
+                    <h2 style="background-color:Gray">{{category.name}}</h2>
+                        {% for subcategory in category.prefetched_subcategory %}
+                        <a href="{% url 'forum.subcategory' name=subcategory.name %}" class="text-dark text-decoration-non">
+                            <p>{{subcategory.name}}</p> 
+                        </a>
+                        {% endfor %}
+                </div>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

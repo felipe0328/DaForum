@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row justify-content-center">
+
+        <div class="col-md-6">
+            <p>
+                {% for category in categories %}
+                    {% if category.need_auth == False %}
+                        <b>[{{category.name}}]</b>
+                        {% for subcategory in category.prefetched_subcategory %}
+                        <a href="{% url 'forum.subcategory' name=subcategory.name %}" class="text-dark text-decoration-non">{{subcategory.name}} </a>
+                        {% endfor %}
+                        &nbsp;
+                    {% endif %}
+                {% endfor %}
+
+                {% for category in categories %}
+                    {% if category.need_auth %}
+                    {%if user.is_authenticated%}
+                        <b>[{{category.name}}]</b>
+                        {% for subcategory in category.prefetched_subcategory %}
+                        <a href="{% url 'forum.subcategory' name=subcategory.name %}" class="text-dark text-decoration-non">{{subcategory.name}} </a>
+                        {% endfor %}
+                        &nbsp;
+                        {% endif %}
+                    {% endif %}
+                {% endfor%}
+                </p>
+        </div>
+
+        <div class="col-md-4 col-md-2">
+            <a href="{% url 'dashboard' %}"><img src="{% static "images/DA.jpeg" %}" alt="DataArt Forum" width="50"/></a>
+        </div>
+
+    </div>
+
+    <div class="row m-5">
+        <div class="col">
+            <h1>{{subcategory.name}}</h1>
+
+            <a href="{% url 'forum.createThread' name=subcategory.name %}" class="btn btn-primary my-5">Create New Thread</a>
+
+            <div class="container">
+                <div class="row row-cols-1 row-cols-md-4 g-4">
+                    {% for thread in subcategory.prefetched_thread %}
+                    <a href="{% url 'forum.threadView' name=subcategory.name pk=thread.pk %}" style="text-decoration: none;">
+                    <div class="col">
+                      <div class="card h-100">
+                        {% if thread.image %}
+                        <img src="{% static thread.image %}" class="card-img-top">
+                        {% else %}
+                        <img src="{% static "images/placeholder.jpg" %}" class="card-img-top">
+                        {% endif %}
+                        <div class="card-body">
+                          <h5 class="card-title">{{thread.subject}}</h5>
+                          <p class="card-text">{{thread.message|truncatechars:50}}</p>
+                        </div>
+                        <div class="card-footer">
+                          <small class="text-muted">Created by: <b>{{thread.name}}</b> at {{thread.created}}</small>
+                        </div>
+                      </div>
+                    </div>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

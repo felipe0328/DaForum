@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<form method="POST" name="uploadform" enctype="multipart/form-data"> {% csrf_token %}
+    <p>
+        <label for="id_user">User:</label>
+        {% if user.is_authenticated%}
+        <input type="text" name="user" maxlength="200" required="" id="id_user" value="{{user.username}}" readonly>
+        {% else %}
+        <input type="text" name="user" maxlength="200" required="" id="id_user">
+        {% endif %}
+    </p>
+    
+    <p>
+        <label for="id_response">Response:</label>
+        <textarea name="response" cols="40" rows="10" required="" id="id_response"></textarea>
+    </p>
+
+    <button type="submit" class="btn btn-primary my-5">Submit</button>
+    <a class="btn btn-danger" onclick="history.back()">Cancel</a>
+</form>
+
+
+{% endblock %}
